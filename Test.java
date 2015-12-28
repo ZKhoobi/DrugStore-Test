@@ -98,6 +98,8 @@ public class Test {
             driver.get(baseUrl + "/PL/shop/product/productsArayeshi.php?categ=1");
             driver.findElement(By.name("quantity")).sendKeys("4");
             driver.findElement(By.name("cart")).click();
+            driver.findElement(By.name("cartIcon")).click();
+            
         //}
 
         return true;
