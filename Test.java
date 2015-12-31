@@ -88,7 +88,6 @@ public class Test {
     }
 
     public boolean addProductTest() throws Exception{
-        //try {
         driver.get(baseUrl + "/PL/shop/product/productsArayeshi.php?categ=1");
         driver.findElement(By.name("quantity")).sendKeys("4");
         System.out.println("1");
@@ -96,13 +95,10 @@ public class Test {
         System.out.println("2");
         driver.findElement(By.id("cartIcon")).click();
         System.out.println("3");
-
-        //}
-
         return true;
     }
     public boolean seeCartListTest() throws Exception{System.out.println("4");
-        return driver.findElement(By.id("quantity")).getCssValue("visibility").equals("4");
+        return driver.findElement(By.id("quantity")).getText().equals("4");
 
     }
 
@@ -117,6 +113,8 @@ public class Test {
             System.out.print("ERROR:add product is incorrect\n");
         if(!t.seeCartListTest())
             System.out.print("ERROR:see cart list is incorrect\n");
+
+        System.out.println("succes!!!!");
 
         t.tearDown();
     }
