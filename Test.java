@@ -16,10 +16,10 @@ public class Test {
     ///..............................basic functions
     public void setUp() throws Exception {
         driver = new FirefoxDriver();
-        baseUrl = "http://localhost/DrugStore-Code-master";
+        baseUrl = "http://localhost:8080/DrugStore-master";
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
     }
-    public void tearDown() throws Exception {
+    public void tearDown() throws Exception{
         driver.quit();
         String verificationErrorString = verificationErrors.toString();
         if (!"".equals(verificationErrorString)) {
@@ -59,24 +59,9 @@ public class Test {
 
     ///...............................test methods
     public boolean logInTest() throws Exception {
-        //...............first we test true user
-        driver.get(baseUrl + "/index.php");
-        driver.findElement(By.id("myBtn")).click();
-        driver.findElement(By.id("usrname")).sendKeys("niosha");
-        driver.findElement(By.id("psw")).sendKeys("123");
-        driver.findElement(By.id("lgin")).click();
-        driver.get(baseUrl + "/index.php");
 
-        //System.out.println("111"+driver.findElement(By.id("error")).getCssValue("visibility"));
-        //System.out.println("222"+driver.findElement(By.id("successful")).getCssValue("visibility"));
-
-        if(driver.findElement(By.id("error")).getCssValue("visibility").equals("visible"))//if it cant understand out user
-        {
-            //System.out.println("333"+driver.findElement(By.id("error")).getCssValue("visibility"));
-            return false;
-        }
-        //................second we examine false user
-        driver.get(baseUrl + "/PL/shop/product/productsArayeshi.php?categ=4");
+        //............................examine false user
+        driver.get(baseUrl + "/index.php");
         driver.findElement(By.id("myBtn")).click();
         driver.findElement(By.id("usrname")).sendKeys("khoobi");
         driver.findElement(By.id("psw")).sendKeys("123");
@@ -84,28 +69,41 @@ public class Test {
         driver.get(baseUrl + "/index.php");
         if(!driver.findElement(By.id("error")).getCssValue("visibility").equals("visible"))//if it allow to false user to log in
         {
-            //System.out.println("444"+driver.findElement(By.id("error")).getCssValue("visibility"));
             return false;
         }
-        return true;
-    }
-    public boolean searchTest() throws Exception{
+
+        //..............................test true user
+        driver.get(baseUrl + "/index.php");
+        driver.findElement(By.id("myBtn")).click();
+        driver.findElement(By.id("usrname")).sendKeys("niousha");
+        driver.findElement(By.id("psw")).sendKeys("123");
+        driver.findElement(By.id("lgin")).click();
+        driver.get(baseUrl + "/index.php");
+        if(driver.findElement(By.id("error")).getCssValue("visibility").equals("visible"))//if it cant understand out user
+        {
+            return false;
+        }
+
         return true;
     }
 
     public boolean addProductTest() throws Exception{
         //try {
-            driver.get(baseUrl + "/PL/shop/product/productsArayeshi.php?categ=1");
-            driver.findElement(By.name("quantity")).sendKeys("4");
-            driver.findElement(By.name("cart")).click();
-            driver.findElement(By.name("cartIcon")).click();
-            
+        driver.get(baseUrl + "/PL/shop/product/productsArayeshi.php?categ=1");
+        driver.findElement(By.name("quantity")).sendKeys("4");
+        System.out.println("1");
+        driver.findElement(By.name("cart")).click();
+        System.out.println("2");
+        driver.findElement(By.id("cartIcon")).click();
+        System.out.println("3");
+
         //}
 
         return true;
     }
-    public boolean seeCartListTest() throws Exception{
-        return true;
+    public boolean seeCartListTest() throws Exception{System.out.println("4");
+        return driver.findElement(By.id("quantity")).getCssValue("visibility").equals("4");
+
     }
 
     ///...............................main method
@@ -115,8 +113,6 @@ public class Test {
 
         if(!t.logInTest())
             System.out.print("ERROR:log in is incorrect\n");
-        if(!t.searchTest())
-            System.out.print("ERROR:search is incorrect\n");
         if(!t.addProductTest())
             System.out.print("ERROR:add product is incorrect\n");
         if(!t.seeCartListTest())
